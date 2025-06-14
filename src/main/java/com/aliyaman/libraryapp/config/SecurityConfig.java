@@ -19,8 +19,9 @@ import javax.swing.*;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private static final String AuTHENTICATION = "/login";
+    private static final String AUTHENTICATION = "/login";
     private static final String REGISTER = "/register";
+    private static final String REFRESH_TOKEN = "/refreshToken";
 
 
     private final AuthenticationProvider authenticationProvider;
@@ -39,7 +40,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(AuTHENTICATION,REGISTER).permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(REFRESH_TOKEN,AUTHENTICATION,REGISTER).permitAll().anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

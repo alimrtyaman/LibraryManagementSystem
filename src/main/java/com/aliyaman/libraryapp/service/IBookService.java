@@ -11,4 +11,6 @@ public interface IBookService {
     public List<BookDto> gellAllBooks();
 
     public boolean deleteBookById(Long id);
+
+    public BookDto findBookByName(String title);
 }

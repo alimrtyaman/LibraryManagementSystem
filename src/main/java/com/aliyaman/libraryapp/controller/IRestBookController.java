@@ -11,4 +11,6 @@ public interface IRestBookController {
     public List<BookDto> gellAllBooks();
 
     public boolean deleteBookById(Long id);
+
+    public BookDto findBookByName(String title);
 }

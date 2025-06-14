@@ -5,6 +5,7 @@ import com.aliyaman.libraryapp.entity.Book;
 import com.aliyaman.libraryapp.mapper.BookMapper;
 import com.aliyaman.libraryapp.repository.BookRepository;
 import com.aliyaman.libraryapp.service.IBookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class BookServiceImpl implements IBookService {
 
-    private BookRepository bookRepository;
-    private BookMapper bookMapper;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
+
+    @Autowired
     public BookServiceImpl(BookRepository theBookRepository , BookMapper bookMapper){
         this.bookMapper = bookMapper;
         this.bookRepository=theBookRepository;
@@ -44,4 +47,11 @@ public class BookServiceImpl implements IBookService {
        bookRepository.deleteById(id);
         return true;
     }
+
+    @Override
+    public BookDto findBookByName(String title) {
+        return bookRepository.findBookByTitle(title).map(bookMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Book not found with name " + title));
+    }
+
 }
