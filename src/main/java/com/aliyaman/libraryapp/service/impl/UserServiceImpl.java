@@ -1,11 +1,15 @@
 package com.aliyaman.libraryapp.service.impl;
 
+import com.aliyaman.libraryapp.dto.AssignRoleRequest;
 import com.aliyaman.libraryapp.dto.UserDto;
+import com.aliyaman.libraryapp.entity.Role;
 import com.aliyaman.libraryapp.entity.User;
 import com.aliyaman.libraryapp.mapper.UserMapper;
+import com.aliyaman.libraryapp.repository.RoleRepository;
 import com.aliyaman.libraryapp.repository.UserRepository;
 import com.aliyaman.libraryapp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,11 +23,14 @@ public class UserServiceImpl implements IUserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private RoleRepository roleRepository;
+
 
     @Autowired
-    public UserServiceImpl(UserRepository theuserRepository,UserMapper theUserMApper){
+    public UserServiceImpl(UserRepository theuserRepository, UserMapper theUserMApper, RoleRepository roleRepository){
         this.userRepository=theuserRepository;
         this.userMapper = theUserMApper;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -53,5 +60,18 @@ public class UserServiceImpl implements IUserService {
               .map(userMapper::toDto)
               .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public String assignRoleToUser(AssignRoleRequest request){
+        User user = userRepository.findUserByEmail(request.getEmail()).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+        Role userRole = roleRepository.findByName(request.getRoleName()).orElseThrow(
+                () -> new IllegalArgumentException("Role not found")
+        );
+        user.getRoles().add(userRole);
+        userRepository.save(user);
+        return "Role has been added success";
     }
 }

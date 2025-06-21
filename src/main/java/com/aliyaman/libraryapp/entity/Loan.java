@@ -20,7 +20,7 @@ public class Loan {
     private Long id;
 
     @Column(name = "borrow_date")
-    private Date borrowDate;
+    private LocalDateTime borrowDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
