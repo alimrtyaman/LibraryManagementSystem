@@ -1,10 +1,12 @@
 package com.aliyaman.libraryapp.security;
 
+import com.aliyaman.libraryapp.entity.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +14,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtService {
@@ -27,7 +31,13 @@ public class JwtService {
     public String generateToken(UserDetails userDetails){
 
         Map<String , Object> claims = new HashMap<>();
-        claims.put("role" , "admin");
+        if (userDetails instanceof CustomUserDetails customUserDetails){
+            List<String> roles = customUserDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+
+            claims.put("roles" , roles);
+        }
         return
         Jwts.builder()
                 .setSubject(userDetails.getUsername())
