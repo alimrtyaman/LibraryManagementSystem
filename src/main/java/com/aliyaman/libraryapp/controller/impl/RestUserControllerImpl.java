@@ -1,8 +1,10 @@
 package com.aliyaman.libraryapp.controller.impl;
 
 import com.aliyaman.libraryapp.controller.IRestUserController;
+import com.aliyaman.libraryapp.dto.AssignRoleRequest;
 import com.aliyaman.libraryapp.dto.UserDto;
 import com.aliyaman.libraryapp.service.IUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +35,12 @@ public class RestUserControllerImpl implements IRestUserController {
     @Override
     public List<UserDto> getAllUsers() {
         return iUserService.getAllUsers();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/assign-role")
+    @Override
+    public String assignRoleToUser(@RequestBody AssignRoleRequest request) {
+        return "";
     }
 }
