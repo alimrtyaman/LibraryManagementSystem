@@ -31,6 +31,7 @@ public class RestUserControllerImpl implements IRestUserController {
         return iUserService.deleteUser(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     @Override
     public List<UserDto> getAllUsers() {
