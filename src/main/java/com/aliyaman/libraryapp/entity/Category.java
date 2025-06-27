@@ -1,6 +1,7 @@
 package com.aliyaman.libraryapp.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +23,9 @@ public class Category {
     private Long id;
 
     @Column(name = "category")
-    private String category;
+    private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Book> books = new ArrayList<>();
 }
