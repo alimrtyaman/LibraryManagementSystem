@@ -79,4 +79,41 @@ public class BookServiceImpl implements IBookService {
         return bookMapper.toDto(savedBook);
     }
 
+    @Transactional
+    @Override
+    public BookDto updateBook(Long id, BookDtoRequest request) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
+
+        if (request.getTitle() != null) {
+            book.setTitle(request.getTitle());
+        }
+
+        if (request.getDescription() != null) {
+            book.setDescription(request.getDescription());
+        }
+
+        if (request.getAuthor() != null) {
+            book.setAuthor(request.getAuthor());
+        }
+
+        if (request.getStock() != null) {
+            book.setStock(request.getStock());
+        }
+
+        if (request.getIsbn() != null) {
+            book.setIsbn(request.getIsbn());
+        }
+
+        if (request.getCategoryId() != null) {
+            Category category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("Category Not Found"));
+            book.setCategory(category);
+        }
+
+        Book saved = bookRepository.save(book);
+        return bookMapper.toDto(saved);
+    }
+
+
 }

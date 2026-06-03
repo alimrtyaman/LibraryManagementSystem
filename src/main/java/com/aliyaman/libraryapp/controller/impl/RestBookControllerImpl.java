@@ -21,7 +21,7 @@ public class RestBookControllerImpl implements IRestBookController {
         this.iBookService = iBookService;
     }
 
-    @GetMapping(path = {"id"})
+    @GetMapping(path = {"/{id}"})
     @Override
     public BookDto findBookById(@PathVariable Long id) {
         return iBookService.findBookById(id);
@@ -52,4 +52,13 @@ public class RestBookControllerImpl implements IRestBookController {
     public BookDto saveBook(@RequestBody BookDtoRequest request) {
         return iBookService.saveBook(request);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    @Override
+    public BookDto updateBook(@PathVariable Long id,
+                              @RequestBody BookDtoRequest request) {
+        return iBookService.updateBook(id, request);
+    }
+
 }

@@ -17,4 +17,6 @@ public interface IRestBookController {
 
     public BookDto saveBook(BookDtoRequest request);
 
+    public BookDto updateBook(Long id, BookDtoRequest request);
+
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/loan")
 public class RestLoanControllerImpl implements IRestLoanController {
@@ -18,10 +20,28 @@ public class RestLoanControllerImpl implements IRestLoanController {
         this.loanService = loanService;
     }
 
-    @PostMapping("/loans/{bookId}")
+    @PostMapping
     @Override
-    public LoanDto createLoan(@AuthenticationPrincipal(expression = "userId") Long userId,
-                              @PathVariable(value = "id") Long bookId) {
+    public LoanDto createLoan(@RequestParam Long userId,
+                              @RequestParam Long bookId) {
         return loanService.createLoan(userId, bookId);
+    }
+
+    @GetMapping
+    @Override
+    public List<LoanDto> getAllLoans() {
+        return loanService.getAllLoans();
+    }
+
+    @DeleteMapping("/{id}")
+    @Override
+    public boolean deleteLoan(@PathVariable("id") Long loanId) {
+        return loanService.deleteLoan(loanId);
+    }
+
+    @PatchMapping("/{id}/return")
+    @Override
+    public LoanDto markReturned(@PathVariable("id") Long loanId) {
+        return loanService.markReturned(loanId);
     }
 }

@@ -22,7 +22,7 @@ public class RegisterRequest {
     @NotEmpty(message = "surname should not be empty")
     private String surName;
 
-    @NotEmpty(message = "password should be empty")
+    @NotEmpty(message = "password should not be empty")
     @Size(min = 6 , max = 20 , message = "password lenght must be between 6-20 chracters")
     private String password;
 

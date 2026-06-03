@@ -1,5 +1,6 @@
 package com.aliyaman.libraryapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class Role {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private List<User> users;
 }

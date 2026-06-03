@@ -5,6 +5,8 @@ import com.aliyaman.libraryapp.dto.CategoryDto;
 import com.aliyaman.libraryapp.service.ICategoryService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/api/v1/category")
 public class RestCategoryControllerImpl implements ICategoryRestController {
@@ -26,4 +28,12 @@ public class RestCategoryControllerImpl implements ICategoryRestController {
     public boolean deleteCategory(@PathVariable Long id) {
         return categoryService.deleteCategory(id);
     }
+
+    @GetMapping
+    @Override
+    public List<CategoryDto> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
+
+
 }

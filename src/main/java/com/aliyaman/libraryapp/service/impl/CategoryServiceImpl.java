@@ -8,7 +8,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -38,5 +40,17 @@ public class CategoryServiceImpl implements ICategoryService {
         }
         categoryRepository.delete(category.get());
         return true;
+    }
+
+    @Override
+    public List<CategoryDto> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(cat -> {
+                    CategoryDto dto = new CategoryDto();
+                    BeanUtils.copyProperties(cat, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }

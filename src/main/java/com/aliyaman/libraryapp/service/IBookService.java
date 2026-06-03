@@ -16,4 +16,8 @@ public interface IBookService {
     public BookDto findBookByName(String title);
 
     public BookDto saveBook(BookDtoRequest request);
+
+    BookDto updateBook(Long id, BookDtoRequest request);
+
+
 }
